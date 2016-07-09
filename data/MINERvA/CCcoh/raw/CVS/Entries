@@ -1,0 +1,25 @@
+/t01_background_sources.csv/1.1/Sun Mar 20 00:56:35 2016//
+/t02_fractional_sys_uncertainties.csv/1.1/Sun Mar 20 00:56:35 2016//
+/t03_diffxsec-pionEnergy.csv/1.1/Sun Mar 20 00:56:35 2016//
+/t04_diffxsec-pionAngle.csv/1.1/Sun Mar 20 00:56:35 2016//
+/t05_xsec_nuEnergy.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t06_beam_fluxes.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t07_nu_diffxsec-pionEnergy_stat_covmatrix.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t08_nu_diffxsec-pionEnergy_flux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t09_nu_diffxsec-pionEnergy_nonflux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t10_nubar_diffxsec-pionEnergy_stat_covmatrix.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t11_nubar_diffxsec-pionEnergy_flux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:36 2016//
+/t12_nubar_diffxsec-pionEnergy_nonflux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t13_nu_diffxsec-pionAngle_stat_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t14_nu_diffxsec-pionAngle_flux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t15_nu_diffxsec-pionAngle_nonflux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t16_nubar_diffxsec-pionAngle_stat_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t17_nubar_diffxsec-pionAngle_flux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t18_nubar_diffxsec-pionAngle_nonflux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t19_nu_xsec-nuEnergy_stat_covmatrix.csv/1.1/Sun Mar 20 00:56:37 2016//
+/t20_nu_xsec-nuEnergy_flux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:38 2016//
+/t21_nu_xsec-nuEnergy_nonflux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:38 2016//
+/t22_nubar_xsec-nuEnergy_stat_covmatrix.csv/1.1/Sun Mar 20 00:56:38 2016//
+/t23_nubar_xsec-nuEnergy_flux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:38 2016//
+/t24_nubar_xsec-nuEnergy_nonflux_sys_covmatrix.csv/1.1/Sun Mar 20 00:56:38 2016//
+D
