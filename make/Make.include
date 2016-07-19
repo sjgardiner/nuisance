@@ -196,8 +196,8 @@ endif
 
 ifeq ($(strip $(EXT_FIT_OPTION_WITH_NUWRO)),YES)
      __NUWRO_ENABLED__=YES
-     NUWRO_LIBRARIES = -D__NUWRO_ENABLED__=YES -L$(NUWRO)/bin  -levent
-     NUWRO_INCLUDES =  -I$(NUWRO)/build/Linux/bin -I$(NUWRO)/src -I$(NUWRO)/src/params  
+     NUWRO_LIBRARIES = -D__NUWRO_ENABLED__=YES -L$(NUWRO)/bin -L$(NUWRO)/build/Linux/lib -levent
+     NUWRO_INCLUDES =  -I$(NUWRO)/build/Linux/bin -I$(NUWRO)/src -I$(NUWRO)/src/params  -I$(NUWRO)/build/src
      ROOT_LIBRARIES +=  -lPythia6 -lEGPythia6	     
 
      ifeq ($(strip $(EXT_FIT_OPTION_WITH_NUWRO_REWEIGHT)),YES)
