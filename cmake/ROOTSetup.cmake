@@ -108,9 +108,6 @@ function(GenROOTDictionary OutputDictName Header LinkDef)
   string(REPLACE ";" ";-I" LISTDIRINCLUDES "-I${incdirs}")
   string(REPLACE " " ";" LISTCPPFLAGS "${EXTRA_CXX_FLAGS}")
 
-  #ROOT5 CINT cannot handle it.
-  list(REMOVE_ITEM LISTCPPFLAGS "-std=c++11")
-
   message(STATUS "LISTCPPFLAGS: ${LISTCPPFLAGS}")
   message(STATUS "LISTINCLUDES: ${LISTDIRINCLUDES}")
   #Learn how to generate the Dict.cxx and Dict.hxx
