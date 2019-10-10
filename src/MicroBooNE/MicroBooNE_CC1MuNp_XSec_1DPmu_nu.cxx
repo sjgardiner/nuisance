@@ -102,7 +102,6 @@ void MicroBooNE_CC1MuNp_XSec_1DPmu_nu::ConvertEventRates() {
   Measurement1D::ConvertEventRates();
 
   // Apply MC truth -> reco smearing
-  /*
   TH1D* truth = (TH1D*) fMCHist->Clone(TString(fMCHist->GetName()) + "_truth");
 
   for (int ireco=1; ireco<fMCHist->GetNbinsX()+1; ireco++) {
@@ -112,7 +111,6 @@ void MicroBooNE_CC1MuNp_XSec_1DPmu_nu::ConvertEventRates() {
     }
     fMCHist->SetBinContent(ireco, total / fMCHist->GetBinWidth(ireco));
   }
-  */
   // Preserve normalization because the efficiency is already applied
   //fMCHist->Scale(truth->Integral() / fMCHist->Integral());
 }

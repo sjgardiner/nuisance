@@ -30,13 +30,13 @@ bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax) {
   if (event->NumFSMuon() != 1) return false;
 
   // Veto events with FS mesons
-  if (event->HasFSPions()) return false;
+  if (event->NumFSPions() != 0) return false;
 
   // Veto events with FS electrons
-  if (event->HasFSElectron()) return false;
+  if (event->NumFSElectron() != 0) return false;
 
   // Veto events with FS photons
-  if (event->HasFSPhoton()) return false;
+  if (event->NumFSPhoton() != 0) return false;
 
   // Muon momentum above threshold
   if (event->GetHMFSParticle(13)->fP.Vect().Mag() < 100) return false;

@@ -167,6 +167,7 @@ else() # Everything better be set up already
       mathlib
       packlib
       pawlib)
+cmessage(STATUS "set the right neut 5.4.0")
   else()
     LIST(APPEND EXTRA_LIBS
       -Wl,--as-needed)
