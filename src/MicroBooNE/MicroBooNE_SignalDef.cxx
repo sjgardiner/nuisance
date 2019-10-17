@@ -41,17 +41,10 @@ bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax) {
   // Muon momentum above threshold
   if (event->GetHMFSParticle(13)->fP.Vect().Mag() < 100) return false;
 
-  // At least one proton within momentum range
-  for (unsigned int i=0; i<event->Npart(); i++) {
-    FitParticle* p = event->PartInfo(i);
-    if (!p->IsFinalState()) continue;
-    if (p->fPID != 2212) continue;
-
-    double pp = p->fP.Vect().Mag();
-    if (pp > 300 && pp < 1200) {
-      return true;
-    }
-  }
+  // Leading proton within momentum range
+  if (event->NumFSParticle(2212) == 0) return false;
+  double plead = event->GetHMFSParticle(2212)->fP.Vect().Mag();
+  if (plead > 300 && plead < 1200) return true;
 
   return false;
 }

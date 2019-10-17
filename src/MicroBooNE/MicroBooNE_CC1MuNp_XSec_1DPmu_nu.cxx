@@ -54,7 +54,6 @@ MicroBooNE_CC1MuNp_XSec_1DPmu_nu::MicroBooNE_CC1MuNp_XSec_1DPmu_nu(nuiskey sampl
   SetDataFromRootFile(inputFile, "DataXsec_mumom");
   ScaleData(1E-38);
   SetCovarFromRootFile(inputFile, "CovarianceMatrix_mumom");
-std::cout << "1" << std::endl;
 
   // Load smearing matrix ---------------------------------------------
   TFile* inputRootFile = TFile::Open(inputFile.c_str());
