@@ -34,7 +34,7 @@ MicroBooNE_CC1MuNp_XSec_1DPmu_nu::MicroBooNE_CC1MuNp_XSec_1DPmu_nu(nuiskey sampl
   fSettings = LoadSampleSettings(samplekey);
   fSettings.SetDescription(descrip);
   fSettings.SetXTitle("P_{#mu}^{reco} (GeV)");
-  fSettings.SetYTitle("d^{2}#sigma/dP_{#mu}^{reco}dcos#theta_{#mu}^{reco} (cm^{2}/GeV/nucleon)");
+  fSettings.SetYTitle("d#sigma/dP_{#mu}^{reco} (cm^{2}/GeV/nucleon)");
   fSettings.SetAllowedTypes("FULL,DIAG/FREE,SHAPE,FIX/SYSTCOV/STATCOV","FIX/FULL");
   fSettings.SetEnuRange(0.0, 10.0);
   fSettings.DefineAllowedTargets("Ar");
