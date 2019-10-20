@@ -159,6 +159,10 @@
 #ifndef __NO_MicroBooNE__
 #include "MicroBooNE_CCInc_XSec_2DPcos_nu.h"
 #include "MicroBooNE_CC1MuNp_XSec_1DPmu_nu.h"
+#include "MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu.h"
+#include "MicroBooNE_CC1MuNp_XSec_1DPp_nu.h"
+#include "MicroBooNE_CC1MuNp_XSec_1Dcosp_nu.h"
+#include "MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu.h"
 #endif
 
 #ifndef __NO_MINERvA__
@@ -998,6 +1002,14 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
       */
       if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPmu_nu")) {
     return (new MicroBooNE_CC1MuNp_XSec_1DPmu_nu(samplekey));
+  } else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu")) {
+    return (new MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu(samplekey));
+  } else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPp_nu")) {
+    return (new MicroBooNE_CC1MuNp_XSec_1DPp_nu(samplekey));
+  } else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu")) {
+    return (new MicroBooNE_CC1MuNp_XSec_1Dcosp_nu(samplekey));
+  } else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu")) {
+    return (new MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu(samplekey));
   } else
 #endif
 

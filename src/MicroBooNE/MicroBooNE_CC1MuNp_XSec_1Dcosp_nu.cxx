@@ -17,30 +17,30 @@
 *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-#include "MicroBooNE_CC1MuNp_XSec_1DPmu_nu.h"
+#include "MicroBooNE_CC1MuNp_XSec_1Dcosp_nu.h"
 #include "MicroBooNE_SignalDef.h"
 
 //********************************************************************
-MicroBooNE_CC1MuNp_XSec_1DPmu_nu::MicroBooNE_CC1MuNp_XSec_1DPmu_nu(nuiskey samplekey) {
+MicroBooNE_CC1MuNp_XSec_1Dcosp_nu::MicroBooNE_CC1MuNp_XSec_1Dcosp_nu(nuiskey samplekey) {
 //********************************************************************
 
   // Sample overview ---------------------------------------------------
-  std::string descrip = "MicroBooNE_CC1MuNp_XSec_1DPmu_nu sample. \n" \
+  std::string descrip = "MicroBooNE_CC1MuNp_XSec_1Dcosp_nu sample. \n" \
                         "Target: Ar \n" \
                         "Flux: BNB FHC numu \n" \
-                        "Signal: CC inclusive \n";
+                        "Signal: CC 1 mu + Np \n";
 
   // Setup common settings
   fSettings = LoadSampleSettings(samplekey);
   fSettings.SetDescription(descrip);
-  fSettings.SetXTitle("P_{#mu}^{reco} (GeV)");
-  fSettings.SetYTitle("d^{2}#sigma/dP_{#mu}^{reco}dcos#theta_{#mu}^{reco} (cm^{2}/GeV/nucleon)");
+  fSettings.SetXTitle("cos#theta_{p}^{reco}");
+  fSettings.SetYTitle("d#sigma/dcos#theta_{p}^{reco} (cm^{2}/nucleon)");
   fSettings.SetAllowedTypes("FULL,DIAG/FREE,SHAPE,FIX/SYSTCOV/STATCOV","FIX/FULL");
-  fSettings.SetEnuRange(0.0, 10.0);
+  fSettings.SetEnuRange(0.0, 6.8);
   fSettings.DefineAllowedTargets("Ar");
 
   // Plot information
-  fSettings.SetTitle("MicroBooNE_CC1MuNp_XSec_1DPmu_nu");
+  fSettings.SetTitle("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu");
   fSettings.DefineAllowedSpecies("numu");
 
   FinaliseSampleSettings();
@@ -51,14 +51,14 @@ MicroBooNE_CC1MuNp_XSec_1DPmu_nu::MicroBooNE_CC1MuNp_XSec_1DPmu_nu(nuiskey sampl
 
   // Plot Setup -------------------------------------------------------
   std::string inputFile = FitPar::GetDataBase() + "/MicroBooNE/CC1MuNp/CCNp_data_MC_cov_dataRelease.root";
-  SetDataFromRootFile(inputFile, "DataXsec_mumom");
+  SetDataFromRootFile(inputFile, "DataXsec_pangle");
   ScaleData(1E-38);
-  SetCovarFromRootFile(inputFile, "CovarianceMatrix_mumom");
+  SetCovarFromRootFile(inputFile, "CovarianceMatrix_pangle");
 
   // Load smearing matrix ---------------------------------------------
   TFile* inputRootFile = TFile::Open(inputFile.c_str());
   assert(inputRootFile && inputRootFile->IsOpen());
-  TH2D* tempsmear = (TH2D*) inputRootFile->Get("SmearingMatrix_mumom");
+  TH2D* tempsmear = (TH2D*) inputRootFile->Get("SmearingMatrix_pangle");
   assert(tempsmear);
 
   // Normalize columns
@@ -85,18 +85,18 @@ MicroBooNE_CC1MuNp_XSec_1DPmu_nu::MicroBooNE_CC1MuNp_XSec_1DPmu_nu(nuiskey sampl
 };
 
 
-bool MicroBooNE_CC1MuNp_XSec_1DPmu_nu::isSignal(FitEvent* event) {
+bool MicroBooNE_CC1MuNp_XSec_1Dcosp_nu::isSignal(FitEvent* event) {
   return SignalDef::isCC1MuNp(event, EnuMin, EnuMax);
 };
 
 
-void MicroBooNE_CC1MuNp_XSec_1DPmu_nu::FillEventVariables(FitEvent* event) {
-  if (event->NumFSParticle(13) == 0) return;
-  fXVar = event->GetHMFSParticle(13)->fP.Vect().Mag() / 1000;
+void MicroBooNE_CC1MuNp_XSec_1Dcosp_nu::FillEventVariables(FitEvent* event) {
+  if (event->NumFSParticle(2212) == 0) return;
+  fXVar = event->GetHMFSParticle(2212)->fP.Vect().CosTheta();
 };
 
 
-void MicroBooNE_CC1MuNp_XSec_1DPmu_nu::ConvertEventRates() {
+void MicroBooNE_CC1MuNp_XSec_1Dcosp_nu::ConvertEventRates() {
   // Do standard conversion
   Measurement1D::ConvertEventRates();
 
