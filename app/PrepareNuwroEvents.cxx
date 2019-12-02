@@ -103,6 +103,8 @@ int main(int argc, char *argv[]) {
   std::vector<std::string> inputfiles;
   bool force_output = false;
 
+  gROOT->ProcessLine(".L /genie/app/users/mastbaum/nuwro/bin/event1.so");
+
   // Get Inputs
   for (int i = 1; i < argc; ++i) {
     if (!std::strcmp(argv[i], "-h")) {
