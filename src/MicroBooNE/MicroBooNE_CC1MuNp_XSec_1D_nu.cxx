@@ -57,6 +57,9 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
     fSettings.SetXTitle("#theta_{{#mu}p}^{reco}");
     fSettings.SetYTitle("d#sigma/d#theta_{{#mu}p}^{reco} (cm^{2}/nucleon)");
   }
+  else {
+    assert(false);
+  }
 
   // Sample overview ---------------------------------------------------
   std::string descrip = name + " sample.\n" \
@@ -144,11 +147,11 @@ void MicroBooNE_CC1MuNp_XSec_1D_nu::ConvertEventRates() {
 
   // Apply MC truth -> reco smearing
   TH1D* truth = (TH1D*) fMCHist->Clone(TString(fMCHist->GetName()) + "_truth");
-
-  for (int ireco=1; ireco<fMCHist->GetNbinsX()+1; ireco++) {
+  assert(fSmearingMatrix->GetNbinsX() == fSmearingMatrix->GetNbinsY());
+  for (int ireco=1; ireco<fSmearingMatrix->GetNbinsY()+1; ireco++) {
     double total = 0;
-    for (int itrue=1; itrue<fMCHist->GetNbinsX()+1; itrue++) {
-      total += truth->GetBinContent(itrue) * truth->GetBinWidth(itrue) * fSmearingMatrix->GetBinContent(ireco, itrue);
+    for (int itrue=1; itrue<fSmearingMatrix->GetNbinsX()+1; itrue++) {
+      total += truth->GetBinContent(itrue) * truth->GetBinWidth(itrue) * fSmearingMatrix->GetBinContent(itrue, ireco);
     }
     fMCHist->SetBinContent(ireco, total / fMCHist->GetBinWidth(ireco));
   }
