@@ -39,7 +39,7 @@ public:
   void ConvertEventRates();
 
  private:
-  TMatrixDSym* fSmearingMatrix;
+  TH2D* fSmearingMatrix;
 };
 
 #endif

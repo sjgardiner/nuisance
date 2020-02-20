@@ -58,27 +58,22 @@ MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu::MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu(nuiskey s
   // Load smearing matrix ---------------------------------------------
   TFile* inputRootFile = TFile::Open(inputFile.c_str());
   assert(inputRootFile && inputRootFile->IsOpen());
-  TH2D* tempsmear = (TH2D*) inputRootFile->Get("SmearingMatrix_muangle");
-  assert(tempsmear);
+  TH2D* hsmear = (TH2D*) inputRootFile->Get("SmearingMatrix_muangle");
+  assert(hsmear);
+  fSmearingMatrix = (TH2D*) hsmear->Clone("_ub_ccnp_smearing");
+  fSmearingMatrix->SetDirectory(0);
+  inputRootFile->Close();
+  assert(fSmearingMatrix);
 
   // Normalize columns
-  TH1D* hpx = tempsmear->ProjectionX("_smearing_px");
-  for (int i=1; i<tempsmear->GetNbinsX()+1; i++) {
-    for (int j=1; j<tempsmear->GetNbinsY()+1; j++) {
-      double v = tempsmear->GetBinContent(i, j) / hpx->GetBinContent(i);
-      tempsmear->SetBinContent(i, j, v);
+  TH1D* hpx = fSmearingMatrix->ProjectionX("_smearing_py");
+  for (int i=1; i<fSmearingMatrix->GetNbinsX()+1; i++) {
+    for (int j=1; j<fSmearingMatrix->GetNbinsY()+1; j++) {
+      double v = fSmearingMatrix->GetBinContent(i, j) / hpx->GetBinContent(i);
+      fSmearingMatrix->SetBinContent(i, j, v);
     }
   }
   delete hpx;
-
-  fSmearingMatrix = new TMatrixDSym(fDataHist->GetNbinsX());
-  assert(fSmearingMatrix);
-  for (int i=0; i<fDataHist->GetNbinsX(); i++) {
-    for (int j=0; j<fDataHist->GetNbinsX(); j++) {
-      (*fSmearingMatrix)(i,j) = tempsmear->GetBinContent(i+1, j+1);
-    }
-  }
-  inputRootFile->Close();
 
   // Final setup  -----------------------------------------------------
   FinaliseMeasurement();
@@ -106,7 +101,7 @@ void MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu::ConvertEventRates() {
   for (int ireco=1; ireco<fMCHist->GetNbinsX()+1; ireco++) {
     double total = 0;
     for (int itrue=1; itrue<fMCHist->GetNbinsX()+1; itrue++) {
-      total += truth->GetBinContent(itrue) * truth->GetBinWidth(itrue) * fSmearingMatrix->operator()(ireco-1, itrue-1);
+      total += truth->GetBinContent(itrue) * truth->GetBinWidth(itrue) * fSmearingMatrix->GetBinContent(ireco, itrue);
     }
     fMCHist->SetBinContent(ireco, total / fMCHist->GetBinWidth(ireco));
   }

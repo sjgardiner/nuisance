@@ -16,31 +16,33 @@
 *    You should have received a copy of the GNU General Public License
 *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-#ifndef MICROBOONE_CC1MUNP_1DCOSP_NU_H_SEEN
-#define MICROBOONE_CC1MUNP_1DCOSP_NU_H_SEEN
+#ifndef MICROBOONE_CC1MUNP_1D_NU_H_SEEN
+#define MICROBOONE_CC1MUNP_1D_NU_H_SEEN
 
 #include "Measurement1D.h"
 #include "TH2Poly.h"
 
-class MicroBooNE_CC1MuNp_XSec_1Dcosp_nu : public Measurement1D {
+class MicroBooNE_CC1MuNp_XSec_1D_nu : public Measurement1D {
 public:
   /// Basic Constructor.
-  MicroBooNE_CC1MuNp_XSec_1Dcosp_nu(nuiskey samplekey);
+  MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey);
 
   /// Virtual Destructor
-  ~MicroBooNE_CC1MuNp_XSec_1Dcosp_nu() {};
+  ~MicroBooNE_CC1MuNp_XSec_1D_nu() {};
 
   /// Numu CCinc Signal Definition
   bool isSignal(FitEvent* nvect);
 
-  /// Bin cosp
+  /// Bin Pmu
   void FillEventVariables(FitEvent* customEvent);
 
   /// Smear and build 1D MC histogram from slices
   void ConvertEventRates();
 
- private:
+private:
   TH2D* fSmearingMatrix;
+  enum Distribution { kPmu, kPp, kCosMu, kCosP, kThetaMuP };
+  Distribution fDist;
 };
 
 #endif

@@ -40,8 +40,7 @@ public:
   void ConvertEventRates();
 
  private:
-  TMatrixDSym* fSmearingMatrix;
-  //std::vector<std::vector<float> > fEdgesP;
+   TH2D* fSmearingMatrix;
 };
 
 #endif
