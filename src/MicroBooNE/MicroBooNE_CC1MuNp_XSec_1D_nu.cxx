@@ -153,7 +153,7 @@ void MicroBooNE_CC1MuNp_XSec_1D_nu::ConvertEventRates() {
     for (int itrue=1; itrue<fSmearingMatrix->GetNbinsX()+1; itrue++) {
       total += truth->GetBinContent(itrue) * truth->GetBinWidth(itrue) * fSmearingMatrix->GetBinContent(itrue, ireco);
     }
-    fMCHist->SetBinContent(ireco, total / fMCHist->GetBinWidth(ireco));
+    fMCHist->SetBinContent(ireco, total / truth->GetBinWidth(ireco));
   }
 }
 
