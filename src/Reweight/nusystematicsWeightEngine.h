@@ -1,3 +1,5 @@
+#ifndef nusystWeightEngine_SEEN
+#define nusystWeightEngine_SEEN
 // Copyright 2016 L. Pickering, P Stowell, R. Terri, C. Wilkinson, C. Wret
 
 /*******************************************************************************
@@ -17,22 +19,48 @@
 *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-#ifndef MINIBOONE_CCQE_XSEC_1DENU_NU_H_SEEN
-#define MINIBOONE_CCQE_XSEC_1DENU_NU_H_SEEN
+#include "WeightEngineBase.h"
 
-#include "Measurement1D.h"
+#include "systematicstools/interface/types.hh"
 
-class MiniBooNE_CCQE_XSec_1DEnu_nu : public Measurement1D {
-public:
+#include "nusystematics/artless/response_helper.hh"
 
-  MiniBooNE_CCQE_XSec_1DEnu_nu(nuiskey samplekey);
-  virtual ~MiniBooNE_CCQE_XSec_1DEnu_nu() {};
+#include <cmath>
 
-  void FillEventVariables(FitEvent *event);
-  bool isSignal(FitEvent *event);
+class nusystematicsWeightEngine : public WeightEngineBase {
 
-    bool ccqelike; ///<! Flag for running in CCQELike mode
+ public:
+  nusystematicsWeightEngine();
 
+  nusyst::response_helper DUNErwt;
+
+  systtools::param_value_list_t EnabledParams;
+
+  void Config();
+
+  int ConvDial(std::string name);
+
+  // Functions requiring Override
+  void IncludeDial(std::string name, double startval);
+
+  void SetDialValue(int nuisenum, double val);
+  void SetDialValue(std::string name, double val);
+
+  bool IsDialIncluded(std::string name);
+  bool IsDialIncluded(int nuisenum);
+
+  double GetDialValue(std::string name);
+  double GetDialValue(int nuisenum);
+
+  void Reconfigure(bool silent);
+
+  bool NeedsEventReWeight();
+
+  double CalcWeight(BaseFitEvt* evt);
+
+  void Print();
+
+  bool fUseCV;
 };
 
 #endif

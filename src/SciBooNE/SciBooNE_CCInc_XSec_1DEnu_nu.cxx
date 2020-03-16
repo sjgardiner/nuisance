@@ -17,38 +17,41 @@
  *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "MiniBooNE_CCQE_XSec_1DEnu_nu.h"
+#include "SciBooNE_CCInc_XSec_1DEnu_nu.h"
 
 //********************************************************************
-MiniBooNE_CCQE_XSec_1DEnu_nu::MiniBooNE_CCQE_XSec_1DEnu_nu(nuiskey samplekey) {
+SciBooNE_CCInc_XSec_1DEnu_nu::SciBooNE_CCInc_XSec_1DEnu_nu(nuiskey samplekey) {
   //********************************************************************
 
   // Sample overview ---------------------------------------------------
-  std::string descrip = "MiniBooNE_CCQE_XSec_1DEnu_nu sample. \n"
-                        "Target: CH2 \n"
-                        "Flux: MiniBooNE Forward Horn Current\n"
-                        "Signal: Any event with 1 muon, any nucleons, and no "
-                        "other FS particles \n";
+  std::string descrip = "SciBooNE_CCInc_XSec_1DEnu_nu sample. \n"
+                        "Target: CH \n"
+                        "Flux: SciBooNE Forward Horn Current\n"
+                        "Signal: Any event with 1 muon \n";
 
   // Setup common settings
   fSettings = LoadSampleSettings(samplekey);
   fSettings.SetDescription(descrip);
   fSettings.SetXTitle("E_{#nu} (GeV)");
-  fSettings.SetYTitle("#sigma(E_{#nu}) (cm^{2}/Neutron)");
+  fSettings.SetYTitle("#sigma(E_{#nu}) (cm^{2}/Nucleon)");
   fSettings.SetAllowedTypes("FIX,FREE,SHAPE/FULL,DIAG/NORM/MASK", "FIX/FULL");
-  fSettings.SetEnuRange(0.4, 2.0);
+  fSettings.SetEnuRange(0.25, 8.0);
   fSettings.DefineAllowedTargets("C,H");
-  fSettings.FoundFill("name", "CCQELike", ccqelike, true);
+  fSettings.FoundFill("name", "NUANCE", use_nuance, true);
 
-  // CCQELike plot information
-  fSettings.SetTitle("MiniBooNE_CCQE_XSec_1DEnu_nu");
+  // use_nuance plot information
+  fSettings.SetTitle("SciBooNE_CCInc_XSec_1DEnu_nu");
 
-  if (ccqelike) {
+  if (!use_nuance) {
     fSettings.SetDataInput(FitPar::GetDataBase() +
-                           "MiniBooNE/ccqe/asne_like.txt");
+                           "SciBooNE/CCInc/ccinc_1denu_neut.txt");
+    fSettings.SetCovarInput(FitPar::GetDataBase() +
+                            "SciBooNE/CCInc/ccinc_1denu_neut_cov.txt");
   } else {
     fSettings.SetDataInput(FitPar::GetDataBase() +
-                           "MiniBooNE/ccqe/asne_con.txt");
+                           "SciBooNE/CCInc/ccinc_1denu_nuance.txt");
+    fSettings.SetCovarInput(FitPar::GetDataBase() +
+                            "SciBooNE/CCInc/ccinc_1denu_nuance_cov.txt");
   }
   fSettings.DefineAllowedSpecies("numu");
 
@@ -57,31 +60,23 @@ MiniBooNE_CCQE_XSec_1DEnu_nu::MiniBooNE_CCQE_XSec_1DEnu_nu(nuiskey samplekey) {
   // Scaling Setup ---------------------------------------------------
   // ScaleFactor automatically setup for DiffXSec/cm2
   fScaleFactor =
-      GetEventHistogram()->Integral("width") * double(1E-38) / double(fNEvents) * (14.08/6.0);
+      GetEventHistogram()->Integral("width") * double(1E-38) / double(fNEvents);
 
   // Plot Setup -------------------------------------------------------
   SetDataFromTextFile(fSettings.GetDataInput());
+  SetCorrelationFromTextFile(fSettings.GetCovarInput());
+  SetShapeCovar();
 
   // Final setup  ---------------------------------------------------
   FinaliseMeasurement();
 };
 
-void MiniBooNE_CCQE_XSec_1DEnu_nu::FillEventVariables(FitEvent *event) {
+void SciBooNE_CCInc_XSec_1DEnu_nu::FillEventVariables(FitEvent *event) {
   if (isSignal(event)) {
-    fXVar = event->GetNeutrinoIn()->fP.E() * 1E-3;
+    fXVar = event->GetNeutrinoIn()->fP.E()*1E-3;
   }
 };
 
-bool MiniBooNE_CCQE_XSec_1DEnu_nu::isSignal(FitEvent *event) {
-  // If CC0pi, include both charges
-  if (ccqelike) {
-    if (SignalDef::isCC0pi(event, 14, EnuMin, EnuMax) ||
-        SignalDef::isCC0pi(event, -14, EnuMin, EnuMax))
-      return true;
-  } else {
-    if (SignalDef::isCCQELike(event, 14, EnuMin, EnuMax))
-      return true;
-  }
-
-  return false;
+bool SciBooNE_CCInc_XSec_1DEnu_nu::isSignal(FitEvent *event) {
+  return SignalDef::isCCINC(event, 14, EnuMin, EnuMax);
 }

@@ -120,6 +120,7 @@
 
 #ifndef __NO_MiniBooNE__
 // MiniBooNE CCQE
+#include "MiniBooNE_CCQE_XSec_1DEnu_nu.h"
 #include "MiniBooNE_CCQE_XSec_1DQ2_antinu.h"
 #include "MiniBooNE_CCQE_XSec_1DQ2_nu.h"
 #include "MiniBooNE_CCQE_XSec_2DTcos_antinu.h"
@@ -299,6 +300,7 @@
 #include "SciBooNE_CCCOH_MuPr_1Dthetamu_nu.h"
 #include "SciBooNE_CCCOH_STOPFINAL_1DQ2_nu.h"
 #include "SciBooNE_CCCOH_STOP_NTrks_nu.h"
+#include "SciBooNE_CCInc_XSec_1DEnu_nu.h"
 #endif
 
 #ifndef __NO_K2K__
@@ -321,6 +323,8 @@
 
 #include "OfficialNIWGPlots.h"
 #include "T2K2017_FakeData.h"
+
+#include "SigmaEnuHists.h"
 
 #include "Simple_Osc.h"
 #include "Smear_SVDUnfold_Propagation_Osc.h"
@@ -891,6 +895,9 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
       if (!name.compare("MiniBooNE_CCQE_XSec_1DQ2_nu") ||
           !name.compare("MiniBooNE_CCQELike_XSec_1DQ2_nu")) {
     return (new MiniBooNE_CCQE_XSec_1DQ2_nu(samplekey));
+  } else if (!name.compare("MiniBooNE_CCQE_XSec_1DEnu_nu") ||
+             !name.compare("MiniBooNE_CCQELike_XSec_1DEnu_nu")) {
+    return (new MiniBooNE_CCQE_XSec_1DEnu_nu(samplekey));
   } else if (!name.compare("MiniBooNE_CCQE_XSec_1DQ2_antinu") ||
              !name.compare("MiniBooNE_CCQELike_XSec_1DQ2_antinu") ||
              !name.compare("MiniBooNE_CCQE_CTarg_XSec_1DQ2_antinu")) {
@@ -1064,7 +1071,7 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
   } else if (!name.compare("MINERvA_CC0pi_XSec_2Dptpz_nu")) {
     return (new MINERvA_CC0pi_XSec_2D_nu(samplekey));
 
-  // } else if (!name.compare("MINERvA_CC0pi_XSec_3DptpzTp_nu")) {
+    // } else if (!name.compare("MINERvA_CC0pi_XSec_3DptpzTp_nu")) {
     // return (new MINERvA_CC0pi_XSec_3DptpzTp_nu(samplekey));
 
   } else if (!name.compare("MINERvA_CC0pi_XSec_1Dpt_nu") ||
@@ -1258,11 +1265,11 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
     return (new T2K_CCinc_XSec_2DPcos_nu_nonuniform(samplekey));
 
   } else if (!name.compare("T2K_nueCCinc_XSec_1Dpe_FHC") ||
-	     !name.compare("T2K_nueCCinc_XSec_1Dpe_RHC") ||
-	     !name.compare("T2K_nuebarCCinc_XSec_1Dpe_RHC")) {
+             !name.compare("T2K_nueCCinc_XSec_1Dpe_RHC") ||
+             !name.compare("T2K_nuebarCCinc_XSec_1Dpe_RHC")) {
     return (new T2K_nueCCinc_XSec_1Dpe(samplekey));
 
-  } else if (!name.compare("T2K_nueCCinc_XSec_joint")) { 
+  } else if (!name.compare("T2K_nueCCinc_XSec_joint")) {
     return (new T2K_nueCCinc_XSec_joint(samplekey));
 
     /*
@@ -1390,6 +1397,10 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
 
   } else if (!name.compare("SciBooNE_CCCOH_STOPFINAL_1DQ2_nu")) {
     return (new SciBooNE_CCCOH_STOPFINAL_1DQ2_nu(samplekey));
+  } else if (!name.compare("SciBooNE_CCInc_XSec_1DEnu_nu") ||
+             !name.compare("SciBooNE_CCInc_XSec_1DEnu_nu_NEUT") ||
+             !name.compare("SciBooNE_CCInc_XSec_1DEnu_nu_NUANCE")) {
+    return (new SciBooNE_CCInc_XSec_1DEnu_nu(samplekey));
 
     /*
     K2K Samples
@@ -1406,54 +1417,44 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
     /*
     Fake Studies
     */
-
   } else
 #endif
       if (name.find("ExpMultDist_CCQE_XSec_1D") != std::string::npos &&
           name.find("_FakeStudy") != std::string::npos) {
     return (
         new ExpMultDist_CCQE_XSec_1DVar_FakeStudy(name, file, rw, type, fkdt));
-
   } else if (name.find("ExpMultDist_CCQE_XSec_2D") != std::string::npos &&
              name.find("_FakeStudy") != std::string::npos) {
     return (
         new ExpMultDist_CCQE_XSec_2DVar_FakeStudy(name, file, rw, type, fkdt));
-
   } else if (name.find("GenericFlux_") != std::string::npos) {
     return (new GenericFlux_Tester(name, file, rw, type, fkdt));
-
   } else if (name.find("GenericVectors_") != std::string::npos) {
     return (new GenericFlux_Vectors(name, file, rw, type, fkdt));
-
   } else if (!name.compare("T2K2017_FakeData")) {
     return (new T2K2017_FakeData(samplekey));
-
   } else if (!name.compare("MCStudy_CCQE")) {
     return (new MCStudy_CCQEHistograms(name, file, rw, type, fkdt));
-
   } else if (!name.compare("ElectronFlux_FlatTree")) {
     return (new ElectronFlux_FlatTree(name, file, rw, type, fkdt));
-
   } else if (name.find("ElectronData_") != std::string::npos) {
     return new ElectronScattering_DurhamData(samplekey);
-
   } else if (name.find("MuonValidation_") != std::string::npos) {
     return (new MCStudy_MuonValidation(name, file, rw, type, fkdt));
-
   } else if (!name.compare("NIWGOfficialPlots")) {
     return (new OfficialNIWGPlots(samplekey));
-
+  } else if ((name.find("SigmaEnuHists") != std::string::npos) ||
+             (name.find("SigmaEnuPerEHists") != std::string::npos)) {
+    return (new SigmaEnuHists(name, file, rw, type, fkdt));
   } else if (!name.compare("Simple_Osc")) {
     return (new Simple_Osc(samplekey));
-
   } else if (!name.compare("Smear_SVDUnfold_Propagation_Osc")) {
     return (new Smear_SVDUnfold_Propagation_Osc(samplekey));
-
   } else {
     NUIS_ABORT("Error: No such sample: " << name << std::endl);
   }
 
   // Return NULL if no sample loaded.
   return NULL;
-}
+} // namespace SampleUtils
 } // namespace SampleUtils
