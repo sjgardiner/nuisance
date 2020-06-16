@@ -231,6 +231,7 @@ void CreateRateHistograms(std::string inputs, bool force_out) {
 
       int pdg = fb.PDG;
 
+
       TH1D *fluxHist = GetTH1DFromFile(fb.File, fb.Hist);
 
       double pctg = fb.Fraction;
@@ -268,7 +269,9 @@ void CreateRateHistograms(std::string inputs, bool force_out) {
       eventplot->Reset();
 
       fluxlist[pdg] = (TH1D *)fluxHist->Clone();
+      fluxlist[pdg]->SetDirectory(0);
       eventlist[pdg] = eventplot;
+      eventlist[pdg]->SetDirectory(0);
       nevtlist[pdg] = 0;
       intxseclist[pdg] = 0.0;
       allpdg.push_back(pdg);

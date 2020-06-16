@@ -260,6 +260,8 @@ void printInputCommands() {
 int main(int argc, char *argv[]) {
   //*******************************
 
+  gROOT->ProcessLine(".L /genie/app/users/mastbaum/nuwro/bin/event1.so");
+
   // Program status;
   int status = 0;
 

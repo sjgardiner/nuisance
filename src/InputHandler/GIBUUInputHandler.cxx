@@ -84,8 +84,8 @@ GIBUUInputHandler::GIBUUInputHandler(std::string const &handle,
     }
 
     // Get Flux/Event hist
-    TH1D *fluxhist = dynamic_cast<TH1D *>(inp_file->Get("flux"));
-    TH1D *eventhist = dynamic_cast<TH1D *>(inp_file->Get("evt"));
+    TH1D *fluxhist = dynamic_cast<TH1D *>(inp_file->Get("numu_flux"));
+    TH1D *eventhist = dynamic_cast<TH1D *>(inp_file->Get("numu_flux_evrate"));
     if (!fluxhist || !eventhist) {
       NUIS_ERR(FTL, "Input File Contents: " << inputs[inp_it]);
       inp_file->ls();

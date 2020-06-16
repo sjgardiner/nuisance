@@ -31,31 +31,31 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
     fDist = kPmu;
     objSuffix = "mumom";
     fSettings.SetXTitle("P_{#mu}^{reco} (GeV)");
-    fSettings.SetYTitle("d#sigma/dP_{#mu}^{reco} (cm^{2}/nucleon)");
+    fSettings.SetYTitle("d#sigma/dP_{#mu}^{reco} (cm^{2}/^{40}Ar)");
   }
   else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu")) {
     fDist = kCosMu;
     objSuffix = "muangle";
     fSettings.SetXTitle("cos#theta_{#mu}^{reco}");
-    fSettings.SetYTitle("d#sigma/dcos#theta_{#mu}^{reco} (cm^{2}/nucleon)");
+    fSettings.SetYTitle("d#sigma/dcos#theta_{#mu}^{reco} (cm^{2}/^{40}Ar)");
   }
   else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPp_nu")) {
     fDist = kPp;
     objSuffix = "pmom";
     fSettings.SetXTitle("P_{p}^{reco} (GeV)");
-    fSettings.SetYTitle("d#sigma/dP_{p}^{reco} (cm^{2}/GeV/nucleon)");
+    fSettings.SetYTitle("d#sigma/dP_{p}^{reco} (cm^{2}/GeV/^{40}Ar)");
   }
   else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu")) {
     fDist = kCosP;
     objSuffix = "pangle";
     fSettings.SetXTitle("cos#theta_{p}^{reco}");
-    fSettings.SetYTitle("d#sigma/dcos#theta_{p}^{reco} (cm^{2}/nucleon)");
+    fSettings.SetYTitle("d#sigma/dcos#theta_{p}^{reco} (cm^{2}/^{40}Ar)");
   }
   else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu")) {
     fDist = kThetaMuP;
     objSuffix = "thetamup";
-    fSettings.SetXTitle("#theta_{{#mu}p}^{reco}");
-    fSettings.SetYTitle("d#sigma/d#theta_{{#mu}p}^{reco} (cm^{2}/nucleon)");
+    fSettings.SetXTitle("#theta_{#mup}^{reco}");
+    fSettings.SetYTitle("d#sigma/d#theta_{#mup}^{reco} (cm^{2}/^{40}Ar)");
   }
   else {
     assert(false);
@@ -78,10 +78,10 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
   // Load data ---------------------------------------------------------
   std::string inputFile = FitPar::GetDataBase() + "/MicroBooNE/CC1MuNp/CCNp_data_MC_cov_dataRelease.root";
   SetDataFromRootFile(inputFile, "DataXsec_" + objSuffix);
-  ScaleData(1E-38);
+  ScaleData(1E-38 * 40);  // Temporarily x40 for per-nucleon to per-nucleus
 
-  // ScaleFactor automatically setup for DiffXSec/cm2/Nucleon
-  fScaleFactor = GetEventHistogram()->Integral("width") / fNEvents * 1E-38 / TotalIntegratedFlux();
+  // ScaleFactor for DiffXSec/cm2/Nucleus (with factor of 40 for Ar40)
+  fScaleFactor = GetEventHistogram()->Integral("width") / fNEvents * 1E-38 * 40 / TotalIntegratedFlux();
 
   SetCovarFromRootFile(inputFile, "CovarianceMatrix_" + objSuffix);
 
