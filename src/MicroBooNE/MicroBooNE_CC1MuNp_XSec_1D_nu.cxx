@@ -110,7 +110,7 @@ MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) 
 
 
 bool MicroBooNE_CC1MuNp_XSec_1D_nu::isSignal(FitEvent* event) {
-  return SignalDef::isCC1MuNp(event, EnuMin, EnuMax);
+  return SignalDef::MicroBooNE::isCC1MuNp(event, EnuMin, EnuMax);
 };
 
 

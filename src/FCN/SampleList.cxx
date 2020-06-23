@@ -160,6 +160,7 @@
 #ifndef __NO_MicroBooNE__
 #include "MicroBooNE_CCInc_XSec_2DPcos_nu.h"
 #include "MicroBooNE_CC1MuNp_XSec_1D_nu.h"
+#include "MicroBooNE_CCQE_XSec_1D_nu.h"
 #endif
 
 #ifndef __NO_MINERvA__
@@ -998,17 +999,21 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
       */
       if (!name.compare("MicroBooNE_CCInc_XSec_2DPcos_nu")) {
     return (new MicroBooNE_CCInc_XSec_2DPcos_nu(samplekey));
-  } else
-
-      /*
-        MicroBooNE CC1MuNp
-      */
-      if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPmu_nu") ||
-          !name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu") ||
-          !name.compare("MicroBooNE_CC1MuNp_XSec_1DPp_nu") ||
-          !name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu") ||
-          !name.compare("MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu")) {
+  } else if (!name.compare("MicroBooNE_CC1MuNp_XSec_1DPmu_nu") ||
+             !name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosmu_nu") ||
+             !name.compare("MicroBooNE_CC1MuNp_XSec_1DPp_nu") ||
+             !name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu") ||
+             !name.compare("MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu")) {
     return (new MicroBooNE_CC1MuNp_XSec_1D_nu(samplekey));
+  } else if (!name.compare("MicroBooNE_CCQE_XSec_1DPmu_nu_FullPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1Dcosmu_nu_FullPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1DPp_nu_FullPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1Dcosp_nu_FullPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1DPmu_nu_PartPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1Dcosmu_nu_PartPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1DPp_nu_PartPS") ||
+             !name.compare("MicroBooNE_CCQE_XSec_1Dcosp_nu_PartPS")) {
+    return (new MicroBooNE_CCQE_XSec_1D_nu(samplekey));
   } else
 #endif
 

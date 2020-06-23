@@ -22,11 +22,23 @@
 
 #include "SignalDef.h"
 
-namespace SignalDef {
+class TSpline3;
 
+namespace SignalDef {
+  namespace MicroBooNE {
+
+/**
+ * CC with 1 muon + N>0 protons
+ */
 bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax);
 
-} // namespace SignalDef
+/**
+ * CCQE-like, arxiv:2006.00108
+ */
+bool isCCQE(FitEvent* event, double EnuMin, double EnuMax, bool fullPS, TSpline3* prange);
+
+  }  // namespace MicroBooNE
+}  // namespace SignalDef
 
 #endif
 
