@@ -18,6 +18,8 @@
  *******************************************************************************/
 #include "ComparisonRoutines.h"
 
+#include "Framework/Utils/XSecSplineList.h"
+
 //*******************************
 void printInputCommands() {
   //*******************************
@@ -280,6 +282,10 @@ int main(int argc, char *argv[]) {
   // Read input arguments such as card file, parameter arguments, and fit
   // routines
   NUIS_LOG(FIT, "Starting nuiscomp.exe");
+
+  // Load splines in a very hacky way
+  genie::XSecSplineList* xssl = genie::XSecSplineList::Instance();
+  xssl->LoadFromXml( "/uboone/app/users/gardiner/mymec/tempMEC.xml" );
 
   // Make minimizer class and run fit
   ComparisonRoutines *comp = new ComparisonRoutines(argc, argv);
