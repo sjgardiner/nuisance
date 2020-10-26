@@ -59,6 +59,7 @@ using namespace genie;
 #include "RwCalculators/GReWeightNuXSecNCRES.h"
 #ifdef USE_GENIE_XSECMEC
 #include "RwCalculators/GReWeightXSecMEC.h"
+#include "RwCalculators/GReWeightNuXSecCOHuB.h"
 #endif
 #include "RwCalculators/GReWeightResonanceDecay.h"
 #include "RwCalculators/GReWeightXSecEmpiricalMEC.h"
@@ -143,6 +144,7 @@ GENIEWeightEngine::GENIEWeightEngine(std::string name) {
 #ifdef USE_GENIE_XSECMEC
   if (xsec_MEC) {
     fGenieRW->AdoptWghtCalc("xsec_MEC", new genie::rew::GReWeightXSecMEC);
+    fGenieRW->AdoptWghtCalc("xsec_coh_ub", new genie::rew::GReWeightNuXSecCOHuB());
   }
 #endif
   if (xsec_coh) {
@@ -207,7 +209,7 @@ GENIEWeightEngine::GENIEWeightEngine(std::string name) {
     NUIS_LOG(DEB, "Setting GENIE ReWeight CCQE to kModeNormAndMaShape");
     rwccqe->SetMode(GReWeightNuXSecCCQE::kModeNormAndMaShape);
     // For z-expansion reweighting, only available after 2.10
-#if __GENIE_VERSION__ >= 210 
+#if __GENIE_VERSION__ >= 210
   } else if (ccqetype == "kModeZExp") {
     NUIS_LOG(DEB, "Setting GENIE ReWeight CCQE to kModeZExp");
     rwccqe->SetMode(GReWeightNuXSecCCQE::kModeZExp);
