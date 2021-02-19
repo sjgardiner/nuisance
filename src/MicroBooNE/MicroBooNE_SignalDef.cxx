@@ -111,6 +111,8 @@ bool isCCQE(FitEvent* event, double EnuMin, double EnuMax, bool fullPS, TSpline3
   float rvx = rand->Uniform(   3,  256);
   float rvy = rand->Uniform(-115,  115);
   float rvz = rand->Uniform(   5, 1037);
+  delete rand;
+
   TVector3 rv(rvx, rvy, rvz);
   float range = prange->Eval(proton.p());
   TVector3 re = rv + range * proton.P3().Unit();
