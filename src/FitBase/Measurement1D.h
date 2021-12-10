@@ -643,6 +643,12 @@ protected:
   bool fIsSmeared;    ///< Flag : Apply smearing?
   bool fIsWriting;
 
+  // Norm-Shape covariance
+  bool fIsNS;                   ///< Flag : Perform fit in the NS space
+  TH1D* fDataNSHist;            ///< Data histogram decomposed into shape and norm parts
+  TH1D* fMCNSHist;              ///< MC histogram decomposed into shape and norm parts
+  TMatrixDSym* fNSCovar;        ///< NS covariance matrix
+  TMatrixDSym* fInvNormalCovar; ///< Inverse of the normal cov to print the usual chi2
 
   /// OLD STUFF TO REMOVE
   TH1D* fMCHist_PDG[61]; ///< REMOVE OLD MC PDG Plot

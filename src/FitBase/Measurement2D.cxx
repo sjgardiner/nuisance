@@ -116,6 +116,15 @@ Measurement2D::Measurement2D(void) {
 
   // Extra Histograms
   fMCHist_Modes = NULL;
+
+  fIsNS = false;
+  fNSCovar = NULL;
+  fMapNS = NULL;
+  fDataNS1DHist = NULL;
+  fData1DHist = NULL;
+  fMCNS1DHist = NULL;
+  fInvNormalCovar = NULL;
+
 }
 
 //********************************************************************
@@ -144,6 +153,19 @@ Measurement2D::~Measurement2D(void) {
     delete fInvert;
   if (fDecomp)
     delete fDecomp;
+
+  if (fNSCovar)
+    delete fNSCovar;
+  if (fDataNS1DHist)
+    delete fDataNS1DHist;
+  if (fData1DHist)
+    delete fData1DHist;
+  if (fMCNS1DHist)
+    delete fMCNS1DHist;
+  if (fMapNS)
+    delete fMapNS;
+  if (fInvNormalCovar)
+    delete fInvNormalCovar;
 
   delete fResidualHist;
   delete fChi2LessBinHist;
@@ -650,6 +672,25 @@ void Measurement2D::FinaliseMeasurement() {
     }
   }
 
+  fIsNS = FitPar::Config().GetParB("UseNormShapeCovariance");
+
+  if (fIsNS) {
+    if (covar)
+      delete covar;
+
+    if (!fMapNS) {
+      fMapNS = StatUtils::GenerateMap(fDataHist);
+    }
+
+    fData1DHist = StatUtils::MapToTH1D(fDataHist, fMapNS);
+    fNSCovar = StatUtils::ExtractNSCovar(fFullCovar, fData1DHist, 1e-38);
+    fDataNS1DHist = StatUtils::InitToNS(fData1DHist, 1e-38);
+    StatUtils::SetDataErrorFromCov(fDataNS1DHist, fNSCovar, 1e-38, false);
+
+    covar = StatUtils::GetInvert(fNSCovar);
+    fInvNormalCovar = StatUtils::GetInvert(fFullCovar);
+  }
+
   // Setup fMCHist from data
   fMCHist = (TH2D *)fDataHist->Clone();
   fMCHist->SetNameTitle((fSettings.GetName() + "_MC").c_str(),
@@ -1075,6 +1116,12 @@ double Measurement2D::GetLikelihood() {
     // PlotUtils::ScaleNeutModeArray((TH1**)fMCHist_PDG, scaleF);
   }
 
+  if (fIsNS) {
+    TH1D* temp_MCHist = StatUtils::MapToTH1D(fMCHist, fMapNS);
+    fMCNS1DHist = StatUtils::InitToNS(temp_MCHist, 1e-38);
+    delete temp_MCHist;
+  }
+
   if (!fMapHist) {
     fMapHist = StatUtils::GenerateMap(fDataHist);
   }
@@ -1083,7 +1130,15 @@ double Measurement2D::GetLikelihood() {
   double chi2 = 0.0;
 
   if (fIsChi2) {
-    if (fIsDiag) {
+
+    if (fIsNS) {
+      NUIS_LOG(SAM, "**** Computing chi2 from NS covar ****");
+      chi2 = StatUtils::GetChi2FromCov(fDataNS1DHist, fMCNS1DHist, covar, NULL);
+      NUIS_LOG(SAM, "**** For comparison, here's the normal chi2: " <<
+	       StatUtils::GetChi2FromCov(fDataHist, fMCHist, fInvNormalCovar, fMapHist,
+					 fMaskHist,
+					 NULL));
+    } else if (fIsDiag) {
       chi2 =
           StatUtils::GetChi2FromDiag(fDataHist, fMCHist, fMapHist, fMaskHist);
     } else {

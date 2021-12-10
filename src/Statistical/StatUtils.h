@@ -288,6 +288,10 @@ TMatrixDSym *GetCovarFromTextFile(std::string covfile, int dim);
 /// \brief Calls GetMatrixFromRootFile and turns it into a TMatrixDSym
 TMatrixDSym *GetCovarFromRootFile(std::string covfile, std::string histname);
 
+// "Norm-Shape" covariance
+TMatrixDSym* ExtractNSCovar(TMatrixDSym *full_covar, TH1 *data_hist, double data_scale);
+TH1D* InitToNS(TH1D *hist, double data_scale);
+
 }; // namespace StatUtils
 
 /*! @} */
