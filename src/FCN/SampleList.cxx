@@ -1099,7 +1099,8 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
              !name.compare("MicroBooNE_CC1MuNp_XSec_1Dcosp_nu") ||
              !name.compare("MicroBooNE_CC1MuNp_XSec_1Dthetamup_nu")) {
     return (new MicroBooNE_CC1MuNp_XSec_1D_nu(samplekey));
-  } else if ( !name.compare("MicroBooNE_CC1MuNp_XSec_2D_nu") ) {
+  } else if ( !name.compare("MicroBooNE_CC1MuNp_XSec_2D_PpCosp_nu") ||
+              !name.compare("MicroBooNE_CC1MuNp_XSec_2D_PmuCosmu_nu") ) {
     return ( new MicroBooNE_CC1MuNp_XSec_2D_nu(samplekey) );
   } else
 #endif
