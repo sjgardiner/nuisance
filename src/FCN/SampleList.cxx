@@ -242,6 +242,7 @@
 // T2K CC0pi 2016
 #include "T2K_CC0pi_XSec_2DPcos_nu_I.h"
 #include "T2K_CC0pi_XSec_2DPcos_nu_II.h"
+#include "T2K_CC0piWithProtons_XSec_2018_multidif_0p_1p_Np.h"
 
 // T2K CC0pi 2020 arXiv:1908.10249
 #include "T2K_CC0pi_XSec_H2O_2DPcos_anu.h"
@@ -1387,6 +1388,8 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
 
   } else if (!name.compare("T2K_CC0pinp_ifk_XSec_3Dinfip_nu")) {
     return (new T2K_CC0pinp_ifk_XSec_3Dinfip_nu(samplekey));
+  } else if (!name.compare("T2K_CC0piWithProtons_XSec_2018_multidif_0p_1p_Np") || !name.compare("T2K_CC0piWithProtons_XSec_2018_multidif_0p_1p") || !name.compare("T2K_CC0piWithProtons_XSec_2018_multidif_0p") || !name.compare("T2K_CC0piWithProtons_XSec_2018_multidif_1p")) {
+    return (new T2K_CC0piWithProtons_XSec_2018_multidif_0p_1p_Np(samplekey));
 
     // SciBooNE COH studies
   } else

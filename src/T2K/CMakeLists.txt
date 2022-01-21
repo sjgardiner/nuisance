@@ -55,9 +55,11 @@ T2K_CC0pinp_ifk_XSec_3Dinfp_nu.cxx
 T2K_CC0pinp_ifk_XSec_3Dinfa_nu.cxx
 T2K_CC0pinp_ifk_XSec_3Dinfip_nu.cxx
 T2K_SignalDef.cxx
+T2K_CC0piWithProtons_XSec_2018_multidif_0p_1p_Np.cxx
 )
 
 set(HEADERFILES
+T2K_CC0piWithProtons_XSec_2018_multidif_0p_1p_Np.h
 T2K_CC0pi_XSec_H2O_2DPcos_anu.h
 T2K_NuMu_CC0pi_OC_XSec_2DPcos.h
 T2K_NuMu_CC0pi_OC_XSec_2DPcos_joint.h
