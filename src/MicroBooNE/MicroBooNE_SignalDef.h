@@ -32,6 +32,10 @@ namespace SignalDef {
  */
 bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax);
 
+// 2D CCNp analysis
+bool isMesonOrAntimeson( int pdg_code );
+bool isCC1MuNpFor2DAnalysis( FitEvent* event, double EnuMin, double EnuMax );
+
   }  // namespace MicroBooNE
 }  // namespace SignalDef
 
