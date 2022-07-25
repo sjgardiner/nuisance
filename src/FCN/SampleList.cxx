@@ -363,6 +363,7 @@
 
 #include "ElectronFlux_FlatTree.h"
 #include "ElectronScattering_DurhamData.h"
+#include "ElectronScattering_e4nu.h"
 #include "MCStudy_KaonPreSelection.h"
 #include "MCStudy_MuonValidation.h"
 
@@ -1561,6 +1562,8 @@ MeasurementBase *CreateSample(nuiskey samplekey) {
     return (new ElectronFlux_FlatTree(name, file, rw, type, fkdt));
   } else if (name.find("ElectronData_") != std::string::npos) {
     return new ElectronScattering_DurhamData(samplekey);
+  } else if (name.find("e4nu_EQE") != std::string::npos) {
+    return new ElectronScattering_e4nu( samplekey );
   } else if (name.find("MuonValidation_") != std::string::npos) {
     return (new MCStudy_MuonValidation(name, file, rw, type, fkdt));
   } else if (!name.compare("NIWGOfficialPlots")) {

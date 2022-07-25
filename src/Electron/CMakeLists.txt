@@ -18,10 +18,14 @@
 ################################################################################
 set(IMPLFILES
 ElectronScattering_DurhamData.cxx
+ElectronScattering_e4nu.cxx
+E4nu_SignalDef.cxx
 )
 
 set(HEADERFILES
 ElectronScattering_DurhamData.h
+ElectronScattering_e4nu.h
+E4nu_SignalDef.h
 )
 
 
