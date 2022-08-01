@@ -74,8 +74,8 @@ bool SignalDef::e4nu::isEM1p0pi( FitEvent* event, double EnuMin,
   // Get the total number of particles in the event
   int num_particles = event->NParticles();
 
-  // Goes through events with 1.159 GeV to check electron requirements
-  if ( my_Ev == 1.159 && Q2 > 0.1 && p_tot > 0.40 && theta_z > (17. + 7./p_tot)
+  // Goes through events with 1.161 GeV to check electron requirements
+  if ( my_Ev == 1.161 && Q2 > 0.1 && p_tot > 0.40 && theta_z > (17. + 7./p_tot)
     && W < 2. )
   {
     // Checks individual requirements for final-state hadrons
@@ -117,7 +117,7 @@ bool SignalDef::e4nu::isEM1p0pi( FitEvent* event, double EnuMin,
         double pion_momentum = std::sqrt( h_v[0]*h_v[0] + h_v[1]*h_v[1]
           + h_v[2]*h_v[2] ) / 1e3; // GeV
 
-        double theta_pion = h_v[2] / 1e3 / pion_momentum * 180. / M_PI;
+        double theta_pion = std::acos( h_v[2] / 1e3 / pion_momentum ) * 180. / M_PI;
         if ( pion_momentum > 0.15 && theta_pion > 12. ) {
           pion_counter += 1;
         }
@@ -126,8 +126,8 @@ bool SignalDef::e4nu::isEM1p0pi( FitEvent* event, double EnuMin,
       //Negative pion requirements
       else if ( my_pdgf == PI_MINUS ) {
         double pion_momentum = std::sqrt( h_v[0]*h_v[0] + h_v[1]*h_v[1]
-          + h_v[2]*h_v[2] );
-        double theta_pion = h_v[2] / 1e3 / pion_momentum * 180. / M_PI;
+          + h_v[2]*h_v[2] ) / 1e3;
+        double theta_pion = std::acos( h_v[2] / 1e3 / pion_momentum ) * 180. / M_PI;
         if ( pion_momentum > 0.15 && theta_pion > (17. + 4./pion_momentum) ) {
           pion_counter += 1;
         }
