@@ -32,6 +32,7 @@ namespace SignalDef {
  */
 bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax);
 
+bool isCC1Mu2p(FitEvent* event, double EnuMin, double EnuMax);
 /**
  * CCQE-like, arxiv:2006.00108
  */
