@@ -24,7 +24,7 @@
 
 enum measurement {
   ch,
-  c,
+  carbon,
   h2o,
   fe,
   pb,
@@ -57,7 +57,7 @@ class MINERvA_NukeCC0pi_XSec_2D_nu : public Measurement2D {
   // Set up settings based on distribution
   void _SetupDataSettings(measurement measurement);
   // Do nothing and then have the subclasses change which settings are used
-  virtual void SetupDataSettings() {}; 
+  virtual void SetupDataSettings() {};
 
   std::string covar_name;
 };
@@ -71,7 +71,7 @@ class MINERvA_NukeCC0pi_CH_XSec_2D_nu : public MINERvA_NukeCC0pi_XSec_2D_nu {
 class MINERvA_NukeCC0pi_C_XSec_2D_nu : public MINERvA_NukeCC0pi_XSec_2D_nu {
   public: using MINERvA_NukeCC0pi_XSec_2D_nu::MINERvA_NukeCC0pi_XSec_2D_nu;
   protected:
-    virtual void SetupDataSettings() { _SetupDataSettings(c); }
+    virtual void SetupDataSettings() { _SetupDataSettings(carbon); }
 };
 
 class MINERvA_NukeCC0pi_H2O_XSec_2D_nu : public MINERvA_NukeCC0pi_XSec_2D_nu {
