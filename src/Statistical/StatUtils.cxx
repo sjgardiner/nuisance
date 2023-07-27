@@ -128,7 +128,7 @@ Double_t StatUtils::GetChi2FromCov(TH1D *data, TH1D *mc, TMatrixDSym *invcov,
 
   // If a mask if applied we need to apply it before the matrix is inverted
   if (mask) {
-    delete calc_cov; 
+    delete calc_cov;
     calc_cov = ApplyInvertedMatrixMasking(invcov, mask);
     delete calc_data;
     calc_data = ApplyHistogramMasking(data, mask);
@@ -920,7 +920,7 @@ bool StatUtils::IsMatrixWellBehaved(TMatrixDSym* mat) {
   bool wellBehaved = true;
   StopTalking();
   TDecompChol mat_decomp(*mat);
-  
+
   double d1, d2;
   mat_decomp.Det(d1, d2);
 
@@ -935,7 +935,7 @@ bool StatUtils::IsMatrixWellBehaved(TMatrixDSym* mat) {
     wellBehaved = false;
   }
 
-  StartTalking(); 
+  StartTalking();
   return wellBehaved;
 }
 
@@ -1000,7 +1000,7 @@ TMatrixDSym *StatUtils::GetInvert(TMatrixDSym *mat, bool rescale) {
       scaling = smallest;
       (*new_mat) *= 1./scaling;
     }
-    
+
     // Invert full matrix
     if (!StatUtils::IsMatrixWellBehaved(new_mat)){
       NUIS_ERR(WRN, "Problem with rescaled matrix");
@@ -1080,7 +1080,7 @@ TMatrixDSym *StatUtils::GetDecomp(TMatrixDSym *mat) {
     // This is dumb, but just flip the diagonals and remove everything else
     for (int i = 0; i < nrows; ++i){
       for(int j = 0; j <nrows; ++j){
-	if (i != j) { 
+	if (i != j) {
 	  (*new_mat)(i, j) = 0;
 	} else {
 	  if ((*new_mat)(i, j) > 0.0)
@@ -1092,7 +1092,7 @@ TMatrixDSym *StatUtils::GetDecomp(TMatrixDSym *mat) {
     }
     return new_mat;
   }
-  
+
   // Okay, try to decompose...
   TDecompChol LU = TDecompChol(*new_mat);
   LU.Decompose();
@@ -1442,12 +1442,12 @@ TMatrixDSym *StatUtils::ExtractNSCovar(TMatrixDSym *full_covar,
         }
 
         else if (i == replaced_bin_index){
-          (*NS_covar)(i, j) = shape_scale * 
+          (*NS_covar)(i, j) = shape_scale *
 	    (total_rows_covar[j] - data_j * total_covar / total_data) / total_data;
         }
 
         else { // j == replaced_bin_index
-          (*NS_covar)(i, j) = shape_scale * 
+          (*NS_covar)(i, j) = shape_scale *
 	    (total_rows_covar[i] - data_i * total_covar/ total_data) / total_data;
         }
       }
@@ -1457,7 +1457,7 @@ TMatrixDSym *StatUtils::ExtractNSCovar(TMatrixDSym *full_covar,
 	double term3 = - data_j * total_rows_covar[i] / total_data;
 	double term4 = data_i * data_j * total_covar / total_data / total_data;
 
-	(*NS_covar)(i, j) = shape_scale * shape_scale * 
+	(*NS_covar)(i, j) = shape_scale * shape_scale *
 	  (term1 + term2 + term3 + term4) / total_data / total_data;
       }
     }

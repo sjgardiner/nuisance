@@ -129,8 +129,8 @@ Measurement1D::~Measurement1D(void) {
     delete fInvNormalCovar;
   // ***** end NS covar modifications *****
 
-  delete fResidualHist;
-  delete fChi2LessBinHist;
+  if ( fResidualHist ) delete fResidualHist;
+  if ( fChi2LessBinHist ) delete fChi2LessBinHist;
 }
 
 //********************************************************************
@@ -605,7 +605,7 @@ void Measurement1D::FinaliseMeasurement() {
   // Push the diagonals of fFullCovar onto the data histogram
   // Comment this out until the covariance/data scaling is consistent!
   StatUtils::SetDataErrorFromCov(fDataHist, fFullCovar, 1E-38);
-  
+
   // If shape only, set covar and fDecomp using the shape-only matrix (if set)
   if (fIsShape && fShapeCovar && FitPar::Config().GetParB("UseShapeCovar")) {
     if (covar)
@@ -636,11 +636,11 @@ void Measurement1D::FinaliseMeasurement() {
   // ***** NS covar modifications *****
 
   fIsNS = FitPar::Config().GetParB("UseNormShapeCovariance");
-	
+
   if (fIsNS) {
     if (covar)
       delete covar;
-      
+
     fNSCovar = StatUtils::ExtractNSCovar(fFullCovar, fDataHist, 1e-38);
 
     fDataNSHist = StatUtils::InitToNS(fDataHist, 1e-38);
@@ -649,7 +649,7 @@ void Measurement1D::FinaliseMeasurement() {
     covar = StatUtils::GetInvert(fNSCovar);
     fInvNormalCovar = StatUtils::GetInvert(fFullCovar);
 
-  }	
+  }
 
   // ***** end NS covar modifications *****
 
@@ -960,7 +960,7 @@ void Measurement1D::FillHistograms() {
       if (fMCHist_Modes)
 	fMCHist_Modes->Fill(Mode, fXVar, Weight);
     }
-    
+
     fMCFine->Fill(fXVar, Weight);
     if (fMCFine_Modes)
       fMCFine_Modes->Fill(Mode, fXVar, Weight);
@@ -1043,7 +1043,7 @@ void Measurement1D::ScaleEvents() {
       fMCHist_Modes->Scale(fScaleFactor);
     if (fMCFine_Modes)
       fMCFine_Modes->Scale(fScaleFactor, "width");
-    
+
     // Any other differential scaling
   } else {
     fMCHist->Scale(fScaleFactor, "width");
@@ -1131,7 +1131,7 @@ double Measurement1D::GetLikelihood() {
       }
     }
   }
- 
+
   // ***** NS covar modifications *****
 
   if (fIsNS) {
@@ -1147,7 +1147,7 @@ double Measurement1D::GetLikelihood() {
     if (fIsNS) {
       NUIS_LOG(SAM, "**** Computing chi2 from NS covar ****");
       stat = StatUtils::GetChi2FromCov(fDataNSHist, fMCNSHist, covar, NULL);
-      NUIS_LOG(SAM, "**** For comparison, here's the normal chi2: " 
+      NUIS_LOG(SAM, "**** For comparison, here's the normal chi2: "
                << StatUtils::GetChi2FromCov(fDataHist, fMCHist, fInvNormalCovar, NULL));
 
     // ***** end NS covar modifications *****
