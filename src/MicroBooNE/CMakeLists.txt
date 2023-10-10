@@ -1,4 +1,4 @@
-# Copyright 2016 L. Pickering, P Stowell, R. Terri, C. Wilkinson, C. Wret
+# Copyright 2016-2021 L. Pickering, P Stowell, R. Terri, C. Wilkinson, C. Wret
 
 ################################################################################
 #    This file is part of NUISANCE.
@@ -19,16 +19,16 @@
 set(IMPLFILES
 MicroBooNE_CCInc_XSec_2DPcos_nu.cxx
 MicroBooNE_CC1MuNp_XSec_1D_nu.cxx
-MicroBooNE_CCQE_XSec_1D_nu.cxx
 MicroBooNE_CC1Mu2p_XSec_1D_nu.cxx
+MicroBooNE_CC1Mu1p_XSec_1D_nu.cxx
 MicroBooNE_SignalDef.cxx
 )
 
 set(HEADERFILES
 MicroBooNE_CCInc_XSec_2DPcos_nu.h
 MicroBooNE_CC1MuNp_XSec_1D_nu.h
-MicroBooNE_CCQE_XSec_1D_nu.h
 MicroBooNE_CC1Mu2p_XSec_1D_nu.h
+MicroBooNE_CC1Mu1p_XSec_1D_nu.h
 MicroBooNE_SignalDef.h
 )
 

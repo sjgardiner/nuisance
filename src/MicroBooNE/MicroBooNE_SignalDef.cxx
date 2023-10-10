@@ -17,13 +17,13 @@
  *    along with NUISANCE.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "TRandom.h"
-#include "TSpline.h"
 #include "MicroBooNE_SignalDef.h"
 #include "FitUtils.h"
 
 namespace SignalDef {
   namespace MicroBooNE {
+
+    //----------------------------------------//
 
 bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax) {
   // Check CC inclusive
@@ -52,6 +52,8 @@ bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax) {
   return false;
 }
 
+    //----------------------------------------//
+
 bool isCC1Mu2p(FitEvent* event, double EnuMin, double EnuMax) {
   // Check CC inclusive
   if (!SignalDef::isCCINC(event, 14, EnuMin, EnuMax)) return false;
@@ -63,15 +65,22 @@ bool isCC1Mu2p(FitEvent* event, double EnuMin, double EnuMax) {
   if (event->GetHMFSParticle(13)->fP.Vect().Mag() < 100) return false;
   if (event->GetHMFSParticle(13)->fP.Vect().Mag() > 1200) return false;
   
-  // Leading proton within momentum range
-  if (event->NumFSParticle(2212) < 2) return false;
-  double plead = event->GetHMFSParticle(2212)->fP.Vect().Mag();
-  if (plead < 300 || plead > 1000) return false;
-  
-  // Recoil proton within momentum range
-  double precoil = event->GetSHMFSParticle(2212)->fP.Vect().Mag();
-  if (precoil < 300 || precoil > 1000) return false;
-  
+  // Check the existence of at least 2 protons in the final state
+  int NFSProtons = event->NumFSParticle(2212);
+  if (NFSProtons < 2) return false;
+
+  int ProtonCounter = 0;
+  std::vector<int> ProtonIndices = event->GetAllFSProtonIndices();
+
+  for (int i = 0; i < NFSProtons; i++) {
+
+    double mom = event->GetParticleMom( ProtonIndices.at(i) );
+    if (mom > 300 && mom < 1000) { ProtonCounter++; }
+
+  }
+
+  if (ProtonCounter != 2) { return false; }
+
   // Reject events with neutral pions of any momenta
   if (event->NumFSParticle(111) != 0) return false;
 
@@ -90,80 +99,55 @@ bool isCC1Mu2p(FitEvent* event, double EnuMin, double EnuMax) {
   return true;
 }
 
+    //----------------------------------------//
 
-bool isCCQE(FitEvent* event, double EnuMin, double EnuMax, bool fullPS, TSpline3* prange) {
+bool isCC1Mu1p(FitEvent* event, double EnuMin, double EnuMax) {
   // Check CC inclusive
   if (!SignalDef::isCCINC(event, 14, EnuMin, EnuMax)) return false;
 
-  // Veto events which don't have exactly 1 FS muon with p > 100 MeV
+  // Veto events which don't have exactly 1 FS muon
   if (event->NumFSMuon() != 1) return false;
+
+  // Muon momentum range
   if (event->GetHMFSParticle(13)->fP.Vect().Mag() < 100) return false;
+  if (event->GetHMFSParticle(13)->fP.Vect().Mag() > 1200) return false;
+  
+  // Check the existence of at least 1 proton in the final state
+  int NFSProtons = event->NumFSParticle(2212);
+  if (NFSProtons < 1) return false;
 
-  // Veto events with FS pi0s, electrons, or gammas
-  if (event->NumFSPiZero() != 0) return false;
-  if (event->NumFSElectron() != 0) return false;
-  if (event->NumFSPhoton() != 0) return false;
+  int ProtonCounter = 0;
+  std::vector<int> ProtonIndices = event->GetAllFSProtonIndices();
 
-  // No FS charged pions with p > 70
-  if (event->NumFSChargePions() > 0) {
-    if (event->GetHMFSParticle(PhysConst::pdg_charged_pions)->p() > 70) return false;
+  for (int i = 0; i < NFSProtons; i++) {
+
+    double mom = event->GetParticleMom( ProtonIndices.at(i) );
+    if (mom > 300 && mom < 1000) { ProtonCounter++; }
+
   }
 
-  // One proton over momentum threshold
-  size_t np = 0;
-  for (size_t i=0; i<event->NParticles(); i++) {
-    if (event->GetParticleState(i) == kFinalState &&
-        event->GetParticlePDG(i) == 2212 &&
-        event->GetParticleP3(i).Mag() >= 300) {
-      np++;
-    }
+  if (ProtonCounter != 1) { return false; }
+
+  // Reject events with neutral pions of any momenta
+  if (event->NumFSParticle(111) != 0) return false;
+
+  // Reject events with positively charged pions above 70 MeV/c
+  if (event->NumFSParticle(211) != 0) {
+    double ppiplus = event->GetHMFSParticle(211)->fP.Vect().Mag();
+    if (ppiplus > 70) { return false; }
   }
-  if (np != 1) return false;
-
-  // Muon/proton angles
-  FitParticle& muon = *event->GetHMFSMuon();
-  FitParticle& proton = *event->GetHMFSProton();
-
-  float dtmp = proton.P3().Angle(muon.P3()) * 180 / TMath::Pi();
-  dtmp = dtmp <   0 ? dtmp + 180 : dtmp;
-  dtmp = dtmp > 180 ? dtmp - 180 : dtmp;
-
-  float dpmp = (muon.P3().Phi() - proton.P3().Phi()) * 180 / TMath::Pi();
-  dpmp = dpmp <   0 ? dpmp + 360 : dpmp;
-  dpmp = dpmp > 360 ? dpmp - 360 : dpmp;
-
-  // Phase space cuts
-  if (muon.p() < 100 || muon.p() > 1500) return false;
-  float ctmax = fullPS ? 0.95 : 0.8;
-  if (muon.P3().CosTheta() < -0.65 || muon.P3().CosTheta() > ctmax) return false;
-
-  if (proton.p() < 300 || proton.p() > 1000) return false;
-  if (proton.P3().CosTheta() < 0.15 || proton.P3().CosTheta() > 0.95) return false;
-
-  if ((proton.P4() + muon.P4()).Perp() > 350) return false;
-  if (std::abs(dtmp - 90) > 55) return false;
-  if (std::abs(dpmp - 180) > 35) return false;
-
-  // Fiducial volume for approximate proton containment correction
-  TRandom3* rand = new TRandom3(42);
-  float rvx = rand->Uniform(   3,  256);
-  float rvy = rand->Uniform(-115,  115);
-  float rvz = rand->Uniform(   5, 1037);
-  delete rand;
-
-  TVector3 rv(rvx, rvy, rvz);
-  float range = prange->Eval(proton.p());
-  TVector3 re = rv + range * proton.P3().Unit();
-
-  if (!(re.X() >=    3 && re.X() <=  256) &&
-       (re.Y() >= -115 && re.Y() <=  115) &&
-       (re.Z() >=    5 && re.Z() <= 1037)) {
-    return false;
+  
+  // Reject events with negatively charged pions above 70 MeV/c
+  if (event->NumFSParticle(-211) != 0) {
+    double ppiminus = event->GetHMFSParticle(-211)->fP.Vect().Mag();
+    if (ppiminus > 70) { return false; }
   }
-
+  
   return true;
 }
 
+    //----------------------------------------//
+
+
   }  // namespace MicroBooNE
 }  // namespace SignalDef
-

@@ -19,6 +19,7 @@
 
 #include "MicroBooNE_CC1MuNp_XSec_1D_nu.h"
 #include "MicroBooNE_SignalDef.h"
+#include "TH2D.h"
 
 //********************************************************************
 MicroBooNE_CC1MuNp_XSec_1D_nu::MicroBooNE_CC1MuNp_XSec_1D_nu(nuiskey samplekey) {

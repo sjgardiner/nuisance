@@ -20,7 +20,8 @@
 #define MICROBOONE_CC1MUNP_1D_NU_H_SEEN
 
 #include "Measurement1D.h"
-#include "TH2Poly.h"
+
+class TH2D;
 
 class MicroBooNE_CC1MuNp_XSec_1D_nu : public Measurement1D {
 public:
@@ -30,10 +31,10 @@ public:
   /// Virtual Destructor
   ~MicroBooNE_CC1MuNp_XSec_1D_nu() {};
 
-  /// Numu CCinc Signal Definition
+  /// Apply signal definition
   bool isSignal(FitEvent* nvect);
 
-  /// Bin Pmu
+  /// Fill kinematic distributions
   void FillEventVariables(FitEvent* customEvent);
 
   /// Smear and build 1D MC histogram from slices

@@ -22,21 +22,31 @@
 
 #include "SignalDef.h"
 
-class TSpline3;
-
 namespace SignalDef {
   namespace MicroBooNE {
 
 /**
- * CC with 1 muon + N>0 protons
+ * numu CC with 1 muon, N>0 protons, and no pions.
+ *
+ * Phys. Rev. D 102, 112013 (2020), arxiv:2010.02390.
  */
 bool isCC1MuNp(FitEvent* event, double EnuMin, double EnuMax);
 
-bool isCC1Mu2p(FitEvent* event, double EnuMin, double EnuMax);
 /**
- * CCQE-like, arxiv:2006.00108
+ * numu CC with 1 muon (0.1 < Pmu < 1.2 GeV/c), 2 protons (0.3 < Pp < 1 GeV/c), no neutral pions (any momenta), and no charged pions above 65 MeV/c [any number of neutrons is allowed].
+ *
+ * publication reference to be updated
  */
-bool isCCQE(FitEvent* event, double EnuMin, double EnuMax, bool fullPS, TSpline3* prange);
+bool isCC1Mu2p(FitEvent* event, double EnuMin, double EnuMax);
+
+/**
+ * numu CC with 1 muon (0.1 < Pmu < 1.2 GeV/c), 1 proton (0.3 < Pp < 1 GeV/c), no neutral pions (any momenta), and no charged pions above 70 MeV/c [any number of neutrons is allowed].
+ *
+ * publication reference to be updated
+ */
+bool isCC1Mu1p(FitEvent* event, double EnuMin, double EnuMax);
+
+
 
   }  // namespace MicroBooNE
 }  // namespace SignalDef
